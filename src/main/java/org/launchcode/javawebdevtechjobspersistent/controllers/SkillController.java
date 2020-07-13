@@ -37,6 +37,11 @@ public class SkillController {
         return "redirect:";
     }
 
+    @GetMapping("")
+    public String displaySkills() {
+        return "skills/index";
+    }
+
     @GetMapping("view/{skillId}")
     public String displayViewSkill(Model model, @PathVariable int skillId) {
 

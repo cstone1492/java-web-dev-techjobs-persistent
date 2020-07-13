@@ -27,24 +27,43 @@ public class EmployerController {
     @PostMapping("add")
     public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
                                     Errors errors, Model model) {
-
         if (errors.hasErrors()) {
             return "employers/add";
         }
             employerRepository.save(newEmployer);
-        return "redirect";
+        return "employers/index";
+    }
+
+    /*@GetMapping
+    public String displayEmployersIndex(@RequestParam(required = false) Model model) {
+
+        return "employers/index";
+    }*/
+
+    @GetMapping("index")
+    public String displayEmployers(Model model) {
+
+        model.addAttribute("title", "All Employers");
+        model.addAttribute("events", employerRepository.findAll());
+
+        return "employers/index";
     }
 
     @GetMapping("view/{employerId}")
-    public String displayViewEmployer(Model model, @PathVariable int employerId) {
+    public String displayViewEmployer(Model model, @PathVariable(required = false) Integer employerId) {
 
         Optional optEmployer = employerRepository.findById(employerId);
-        if (optEmployer.isPresent()) {
+        if (employerId == null) {
+            model.addAttribute("title", "All Employers");
+            model.addAttribute("employers", employerRepository.findAll());
+        } else if (optEmployer.isPresent()) {
             Employer employer = (Employer) optEmployer.get();
             model.addAttribute("employer", employer);
             return "employers/view";
         } else {
             return "redirect:../";
         }
+
+        return "employers/view";
     }
 }
