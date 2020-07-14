@@ -16,3 +16,6 @@ WHERE location = "St. Louis"
 DELETE FROM jobs
 
 ## Part 4: Test it with SQL
+
+SELECT name, description from skills
+INNER JOIN jobs ON skills where jobs_skills = skills_id
